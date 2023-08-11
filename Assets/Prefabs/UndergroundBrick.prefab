@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1976908530063376646}
   - component: {fileID: 5898829691497153117}
   - component: {fileID: 7495011408069331811}
+  - component: {fileID: -636782926250374298}
   m_Layer: 0
   m_Name: UndergroundBrick
   m_TagString: Untagged
@@ -94,7 +95,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 4537429788940210234}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3b452e15d56ad0d47b742e302fa6432a, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -130,3 +131,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-636782926250374298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537429788940210234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2088d28ce772c2046b70b7423ec15508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emptyBlock: {fileID: 21300000, guid: 2eca4235770708f4ba6a384abaf0824d, type: 3}
+  maxHits: -1
