@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float maxJumpTime = 1f;
 
     public float jumpForce => (2f * maxJumpHeight) / (maxJumpTime / 2f);
-    public float gravity => (-2f * maxJumpHeight) / Mathf.Pow(maxJumpTime / 2f, 2f);
+    public float gravity => (-2f * maxJumpHeight) / Mathf.Pow((maxJumpTime / 2f), 2);
 
     public bool grounded { get; private set; }
     public bool jumping { get; private set; }
@@ -29,10 +29,10 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         HorizontalMovement();
-
+        
         grounded = rigidbody.Raycast(Vector2.down);
 
-        if (grounded) {
+        if(grounded){
             GroundedMovement();
         }
 
@@ -43,6 +43,17 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAxis = Input.GetAxis("Horizontal");
         velocity.x = Mathf.MoveTowards(velocity.x, inputAxis * moveSpeed, moveSpeed * Time.deltaTime);
+
+        if(rigidbody.Raycast(Vector2.right * velocity.x))
+        {  
+            velocity.x = 0f;
+        }
+
+        if(velocity.x > 0f){
+            transform.eulerAngles = Vector3.zero;
+        } else if(velocity.x < 0f) {
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+        }
     }
 
     private void GroundedMovement()
@@ -50,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         velocity.y = Mathf.Max(velocity.y, 0f);
         jumping = velocity.y > 0f;
 
-        if (Input.GetButtonDown("Jump"))
+        if(Input.GetButtonDown("Jump"))
         {
             velocity.y = jumpForce;
             jumping = true;
@@ -59,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ApplyGravity()
     {
-        bool falling = velocity.y < 0f || !Input.GetButton("Jump");
+        bool falling = velocity.y < 0f || !Input.GetButtonDown("Jump");
         float multiplier = falling ? 2f : 1f;
 
         velocity.y += gravity * multiplier * Time.deltaTime;
@@ -80,6 +91,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-      
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            if(transform.DotTest(collision.transform, Vector2.down))
+            {
+                velocity.y = jumpForce / 2f;
+                jumping = true;
+            }
+        }
+
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Star"))
+        {
+            Transform otherTransform = collision.transform;
+
+            if (otherTransform.DotTest(transform, Vector2.up))
+            {
+                velocity.y = 0f;
+            }
+        }
     }
 }
